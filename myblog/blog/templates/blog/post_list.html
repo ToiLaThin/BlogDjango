@@ -6,7 +6,7 @@
     <ul>
         {% for post in object_list %}
             <li>
-                <a href="{% url 'post_detail' post.pk %}">{{post.title}}</a> | {{post.author}} | {{post.category}} -------- At {{post.pub_date}}
+                <a href="{% url 'post_detail' post.pk %}">{{post.title}}</a> | {{post.author}} | <a href="{% url 'post_list_category' post.category|slugify %}">{{post.category}}</a> -------- At {{post.pub_date}}
                 {% if user.is_authenticated %}
                     (<small><a href="{% url 'post_update' post.pk %}">Edit</a> | <a href="{% url 'post_delete' post.pk %}">Delete</a></small>)                
                 {% endif %}

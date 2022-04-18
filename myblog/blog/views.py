@@ -53,10 +53,16 @@ class CategoryCreateView(CreateView):
     template_name = 'blog/category_create.html'
     fields = ['name']
 
-# def PostList_CategoryView(request,category_selected):
-#     posts = Post.objects.filter(category = category_selected)
-#     context = {
-#         'posts': posts,
-#     }
-#     template_name = 'blog/post_list_category.html'
-#     return render(request,template_name,context)
+
+def PostList_CategoryView(request, category_selected):
+    # process the slugified category name
+    category_selected = category_selected.title().replace('-', ' ')
+
+    posts = Post.objects.filter(
+        category=category_selected).order_by('-pub_date')
+    context = {
+        'posts': posts,
+        'category_selected': category_selected,
+    }
+    template_name = 'blog/post_list_category.html'
+    return render(request, template_name, context)

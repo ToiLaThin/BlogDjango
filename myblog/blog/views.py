@@ -7,7 +7,7 @@ from django.views.generic import (
     UpdateView,
     DeleteView,
 )
-from .models import Post
+from .models import Post, Category
 from .forms import PostCreateForm, PostUpdateForm
 
 # Create your views here.
@@ -46,3 +46,17 @@ class PostDeleteView(DeleteView):
     model = Post
     template_name = 'blog/post_delete.html'
     success_url = reverse_lazy('post_list')
+
+
+class CategoryCreateView(CreateView):
+    model = Category
+    template_name = 'blog/category_create.html'
+    fields = ['name']
+
+# def PostList_CategoryView(request,category_selected):
+#     posts = Post.objects.filter(category = category_selected)
+#     context = {
+#         'posts': posts,
+#     }
+#     template_name = 'blog/post_list_category.html'
+#     return render(request,template_name,context)

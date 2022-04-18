@@ -7,14 +7,16 @@ from .views import (
     PostCreateView,
     PostUpdateView,
     PostDeleteView,
+    CategoryCreateView
 )
 
 urlpatterns = [
     path('', HomeView, name='home'),
     path('posts', PostListView.as_view(), name='post_list'),
     path('posts/<int:pk>', PostDetailView.as_view(), name='post_detail'),
-    path('create', PostCreateView.as_view(), name='post_create'),
+    path('posts/create', PostCreateView.as_view(), name='post_create'),
     path('posts/<int:pk>/update', PostUpdateView.as_view(), name='post_update'),
     path('posts/<int:pk>/delete', PostDeleteView.as_view(), name='post_delete'),
+    path('categories/create', CategoryCreateView.as_view(), name='category_create')
 
 ]

@@ -1,0 +1,20 @@
+{% extends 'blog/base.html' %}
+{% block title_tag %}{{post.title_tag}}{% endblock title_tag %}
+{% block title %}<h1>{{post.title}}</h1>{% endblock title %}
+{% block content %}
+    <strong>{{post.category}}</strong>
+    <br>
+    <small>By: {{post.author}} At {{post.pub_date}}</small>
+    {% if user.is_authenticated %}
+        <br>
+        <br>
+        <a href="{% url 'post_update' post.pk %}" class="btn btn-primary">Edit</a>
+        <a href="{% url 'post_delete' post.pk %}" class="btn btn-danger">Delete</a>
+    {% endif %}
+    <hr>
+    <br>
+    {{post.body | safe}}
+    <br>
+    <br>
+    <a href="{% url 'post_list'%}" class="btn btn-secondary">Go Back</a>
+{% endblock content %}

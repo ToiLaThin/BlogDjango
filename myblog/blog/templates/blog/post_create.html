@@ -1,0 +1,16 @@
+{% extends 'blog/base.html' %}
+{% block content %}
+    {% if user.is_authenticated %}
+        <h1>Create new post</h1>
+        <br>
+        <div class="form-group">
+            <form method="post">{%csrf_token%}
+                {{form.as_p}}
+                <button type="submit" class="btn btn-primary">Create</button>
+                <a href="{% url 'post_list' %}" class='btn btn-secondary'>Go Back</a>
+            </form>
+        </div>
+    {% else %}
+        <h1>You do not have the right to create a post</h1>
+    {% endif %}
+{% endblock content %}

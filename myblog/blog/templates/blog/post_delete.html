@@ -1,0 +1,17 @@
+{% extends 'blog/base.html' %}
+{% block content %}
+    {% if user.is_authenticated %}
+        <div class="form-group">
+            <h1>{{post.title}}</h1>
+            <form method="post">{%csrf_token%}
+                <p>You sure you want to <b>terminate</b> this post ?</p>
+                <br>
+                <button type="submit" class="btn btn-danger">Yes, I'm sure</button>
+                <a href="{% url 'post_detail' post.pk %}" class="btn btn-primary">Nah, I changed my mind</a>
+            </form>
+        </div>
+    {% else %}
+        <h1>You do not have the right to change the post</h1>
+    {% endif %}
+{% endblock content %}
+

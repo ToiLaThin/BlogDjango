@@ -1,0 +1,16 @@
+{% extends 'blog/base.html' %}
+{% block content %}
+    {% if user.is_authenticated %}
+        <h1>Fix your post</h1>
+        <br>
+        <div class="form-group">
+            <form method="post">{%csrf_token%}
+                {{form.as_p}}
+                <button type="submit" class="btn btn-danger">Update</button>
+                <a href="{% url 'post_list' %}" class='btn btn-primary'>Go Back</a>
+            </form>
+        </div>
+    {% else %}
+        <h1>You do not have the right to change this post</h1>
+    {% endif %}
+{% endblock content %}

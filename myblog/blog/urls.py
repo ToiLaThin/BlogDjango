@@ -9,13 +9,15 @@ from .views import (
     PostDeleteView,
     CategoryCreateView,
     PostList_CategoryView,
-
+    CategoryListView,
 )
 
 urlpatterns = [
     path('', HomeView, name='home'),
     path('posts', PostListView.as_view(), name='post_list'),
-    path('posts_category/<str:category_selected>', PostList_CategoryView, name='post_list_category'),
+    path('categories', CategoryListView, name='category_list'),
+    path('posts_category/<str:category_selected>',
+         PostList_CategoryView, name='post_list_category'),
     path('posts/<int:pk>', PostDetailView.as_view(), name='post_detail'),
     path('posts/create', PostCreateView.as_view(), name='post_create'),
     path('posts/<int:pk>/update', PostUpdateView.as_view(), name='post_update'),

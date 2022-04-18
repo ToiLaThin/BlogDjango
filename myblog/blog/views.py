@@ -17,11 +17,30 @@ def HomeView(request):
     return render(request, "blog/index.html")
 
 
+# chi co classView này mới có category menu (nếu có category menu context thì hiển thị dropdown)
+# nên những template khác sẽ không có dropdown thay vào đó là link
 class PostListView(ListView):
     model = Post
     template_name = 'blog/post_list.html'
     # or id
     ordering = ['-pub_date']
+
+    # hàm này sẽ gọi lấy context của các lớp cha của lớp PostListView và thêm vào context category_list
+    # các context được đưa vào template sẽ là kq của hàm này. Đây là cách pass context vô generic view
+    def get_context_data(self, *args, **kwargs):
+        category_list = Category.objects.all()
+        context = super(PostListView, self).get_context_data(*args, **kwargs)
+        context['category_list'] = category_list
+        return context
+
+
+def CategoryListView(request):
+    category_list = Category.objects.all()
+    context = {
+        'categories': category_list,
+    }
+    template_name = 'blog/category_list.html'
+    return render(request, template_name, context)
 
 
 class PostDetailView(DetailView):
@@ -54,7 +73,7 @@ class CategoryCreateView(CreateView):
     fields = ['name']
 
 
-def PostList_CategoryView(request, category_selected):
+def PostList_CategoryView(request, category_selected: str):
     # process the slugified category name
     category_selected = category_selected.title().replace('-', ' ')
 

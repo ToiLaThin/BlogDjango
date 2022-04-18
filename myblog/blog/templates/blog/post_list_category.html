@@ -18,6 +18,7 @@
                 <br>
             {% endfor %}
         </ul>
+        <a href="{% url 'post_list' %}" class="btn btn-secondary">Go Back</a>
     {% endblock %}
 {% else %}
     <h1>Sorry, this category is not exist!!!</h1>

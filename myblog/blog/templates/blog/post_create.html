@@ -10,6 +10,12 @@
                 <a href="{% url 'post_list' %}" class='btn btn-secondary'>Go Back</a>
             </form>
         </div>
+
+        <script>
+            {% comment %} ko là user.username được vì author trong model là ForeignKey field {% endcomment %}
+            var name = '{{ request.user.id }}'
+            document.getElementById('author').value = name
+        </script>
     {% else %}
         <h1>You do not have the right to create a post</h1>
     {% endif %}

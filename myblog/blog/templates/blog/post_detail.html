@@ -5,7 +5,7 @@
     <strong>{{post.category}}</strong>
     <br>
     <small>By: {{post.author}} At {{post.pub_date}}</small>
-    {% if user.is_authenticated %}
+    {% if user.is_authenticated and request.user.id == post.author.id %}
         <br>
         <br>
         <a href="{% url 'post_update' post.pk %}" class="btn btn-primary">Edit</a>

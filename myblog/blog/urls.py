@@ -10,6 +10,7 @@ from .views import (
     CategoryCreateView,
     PostList_CategoryView,
     CategoryListView,
+    LikePostView,
 )
 
 urlpatterns = [
@@ -22,6 +23,7 @@ urlpatterns = [
     path('posts/create', PostCreateView.as_view(), name='post_create'),
     path('posts/<int:pk>/update', PostUpdateView.as_view(), name='post_update'),
     path('posts/<int:pk>/delete', PostDeleteView.as_view(), name='post_delete'),
-    path('categories/create', CategoryCreateView.as_view(), name='category_create')
+    path('categories/create', CategoryCreateView.as_view(), name='category_create'),
+    path('posts/<int:pk>/like', LikePostView, name='like_post'),
 
 ]

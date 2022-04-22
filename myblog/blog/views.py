@@ -1,5 +1,5 @@
-from django.shortcuts import render
-from django.urls import reverse_lazy
+from django.shortcuts import render, get_object_or_404
+from django.urls import reverse_lazy, reverse
 from django.views.generic import (
     ListView,
     DetailView,
@@ -9,6 +9,7 @@ from django.views.generic import (
 )
 from .models import Post, Category
 from .forms import PostCreateForm, PostUpdateForm
+from django.http import HttpResponseRedirect
 
 # Create your views here.
 
@@ -46,6 +47,28 @@ def CategoryListView(request):
 class PostDetailView(DetailView):
     model = Post
     template_name = 'blog/post_detail.html'
+
+    def get_context_data(self, *args, **kwargs):
+        context = super(PostDetailView, self).get_context_data(*args, **kwargs)
+
+        liked = None
+        selected_post = get_object_or_404(Post, id=self.kwargs['pk'])
+        # xem da like bai do hay chua
+        if selected_post.likes.filter(id=self.request.user.id).exists():
+            liked = True
+        else:
+            liked = False
+
+        context['liked'] = liked
+        context['total_likes'] = selected_post.likes_count()
+        return context
+
+
+def CategoryListView(request):
+    category_list = Category.objects.all()
+    context = {
+        'categories': category_list,
+    }
 
 
 class PostCreateView(CreateView):
@@ -85,3 +108,17 @@ def PostList_CategoryView(request, category_selected: str):
     }
     template_name = 'blog/post_list_category.html'
     return render(request, template_name, context)
+
+
+def LikePostView(request, pk):
+    liked_post = get_object_or_404(Post, id=request.POST.get('post_id'))
+    liked = None  # user already liked this post or not
+    # xem lai id user hien tai
+    if liked_post.likes.filter(id=request.user.id).exists():
+        liked_post.likes.remove(request.user)
+        liked = False
+    else:
+        liked_post.likes.add(request.user)
+        liked = True
+    return HttpResponseRedirect(reverse('post_detail', args=[str(pk)]))
+    # ko co template name ma chi quay lai dung trang do

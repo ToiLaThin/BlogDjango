@@ -18,6 +18,7 @@ class PostCreateForm(forms.ModelForm):
         widgets = {
             'title': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Type your blog title into here!!!'}),
             'title_tag': forms.TextInput(attrs={'class': 'form-control'}),
+            'snippet': forms.TextInput(attrs={'class': 'form-control'}),
             'author': forms.TextInput(attrs={
                 'class': 'form-control',
                 'id': 'author',
@@ -34,10 +35,11 @@ class PostCreateForm(forms.ModelForm):
 class PostUpdateForm(forms.ModelForm):
     class Meta:
         model = Post
-        fields = ['title', 'body', 'category', 'pub_date']
+        fields = ['title', 'body', 'category', 'pub_date', 'snippet']
         widgets = {
             'title': forms.TextInput(attrs={'class': 'form-control'}),
             'title_tag': forms.TextInput(attrs={'class': 'form-control'}),
+            'snippet': forms.TextInput(attrs={'class': 'form-control'}),
             'author': forms.Select(attrs={'class': 'form-control'}),
             'category': forms.Select(choices=choice_lst, attrs={'class': 'form-control'}),
             'body': forms.Textarea(attrs={'class': 'form-control'}),

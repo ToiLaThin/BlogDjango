@@ -17,6 +17,7 @@
                 {% comment %} {{post.body|slice:":200"|safe}} {% endcomment %}
                 <br>
                 <br>
+                <hr>
             {% endfor %}
         </ul>
         <a href="{% url 'post_list' %}" class="btn btn-secondary">Go Back</a>

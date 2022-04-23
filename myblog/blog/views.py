@@ -48,28 +48,20 @@ class PostDetailView(DetailView):
     model = Post
     template_name = 'blog/post_detail.html'
 
-    def get_context_data(self, *args, **kwargs):
+    def get_context_data(self, *args, **kwargs):        
         context = super(PostDetailView, self).get_context_data(*args, **kwargs)
 
         liked = None
         selected_post = get_object_or_404(Post, id=self.kwargs['pk'])
-        # xem da like bai do hay chua
+        #xem da like bai do hay chua
         if selected_post.likes.filter(id=self.request.user.id).exists():
             liked = True
-        else:
+        else: 
             liked = False
 
         context['liked'] = liked
         context['total_likes'] = selected_post.likes_count()
         return context
-
-
-def CategoryListView(request):
-    category_list = Category.objects.all()
-    context = {
-        'categories': category_list,
-    }
-
 
 class PostCreateView(CreateView):
     model = Post

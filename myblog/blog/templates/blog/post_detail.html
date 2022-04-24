@@ -13,6 +13,12 @@
     {% endif %}
     <hr>
     <br>
+    {% if post.header_image %}
+        {% comment %} chi quan tâm tới url của post.header_image {% endcomment %}
+        <img src="{{post.header_image.url}}">
+        <br>
+        <br>
+    {% endif %}
     {{post.body | safe}}
     <br>
     <br>
@@ -31,5 +37,42 @@
         <small><a href="{% url 'login' %}">Log in</a> first to like the post</small>
         <br>
     {% endif %}
+
+
+    {% comment %} code phần author profile {% endcomment %}
+    {% comment %} acess profile through author vì author là foreign key tới user {% endcomment %}
+    {% if post.author.profile %}
+        <div class="card mb-2 border-light" style="max-width:100%;background-color:#EEEEEE;border-radius:10px;text-align:justify;">
+            <div class="row g-0">
+            <div class="col-md-1">
+                <br>
+                <img src="{{post.author.profile.profile_picture.url}}" class="card-img" width=100 height=100 style="border-radius:50%;margin:-5px 5px;">
+            </div>
+            <div class="col-md-11">
+                <div class="card-body">
+                <h5 class="card-title">
+                    {{post.author.first_name}}
+                    {{post.author.last_name}}
+                </h5>
+                <p class="small text-muted">
+                    {% if post.author.profile.blog_url %}
+                        <a href="{{post.author.profile.blog_url}}">Website</a> | 
+                    {% endif %}
+                    {% if post.author.profile.fb_url %}
+                        <a href="{{post.author.profile.fb_url}}">Facebook</a> | 
+                    {% endif %}
+                    {% if post.author.profile.zalo_url %}
+                        <a href="{{post.author.profile.zalo_url}}">Zalo</a> 
+                    {% endif %}
+                </p>
+                <p class="card-text small">{{post.author.profile.bio}}</p>
+                </div>
+            </div>
+            </div>
+        </div>
+        <br>
+    {% endif %}
+
+    
     <a href="{% url 'post_list'%}" class="btn btn-secondary">Go Back</a>
 {% endblock content %}

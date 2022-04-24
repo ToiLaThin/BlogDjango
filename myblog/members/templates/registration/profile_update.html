@@ -1,6 +1,8 @@
 {% extends 'blog/base.html' %}
 {% block content %}
     <h1>Profile</h1>
+    {% comment %} references profile as lower case {% endcomment %}
+    <small>{{user.profile.bio}}</small>
     <div class="form-group">
         <form method="post">{%csrf_token%}
             {{form.as_p}}

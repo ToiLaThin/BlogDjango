@@ -14,7 +14,8 @@ class PostCreateForm(forms.ModelForm):
     class Meta:
         model = Post
         fields = ['title', 'title_tag', 'author',
-                  'body', 'pub_date', 'category']
+                  'body', 'pub_date', 'category', 'header_image']
+        # with header_image không cần widget
         widgets = {
             'title': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Type your blog title into here!!!'}),
             'title_tag': forms.TextInput(attrs={'class': 'form-control'}),
@@ -35,7 +36,8 @@ class PostCreateForm(forms.ModelForm):
 class PostUpdateForm(forms.ModelForm):
     class Meta:
         model = Post
-        fields = ['title', 'body', 'category', 'pub_date', 'snippet']
+        fields = ['title', 'body', 'category',
+                  'pub_date', 'snippet']
         widgets = {
             'title': forms.TextInput(attrs={'class': 'form-control'}),
             'title_tag': forms.TextInput(attrs={'class': 'form-control'}),

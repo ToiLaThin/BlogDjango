@@ -11,6 +11,7 @@ from .views import (
     PostList_CategoryView,
     CategoryListView,
     LikePostView,
+    ChartView,
 )
 
 urlpatterns = [
@@ -25,5 +26,6 @@ urlpatterns = [
     path('posts/<int:pk>/delete/', PostDeleteView.as_view(), name='post_delete'),
     path('categories/create/', CategoryCreateView.as_view(), name='category_create'),
     path('posts/<int:pk>/like/', LikePostView, name='like_post'),
+    path('statistic', ChartView, name='statistic'),
 
 ]

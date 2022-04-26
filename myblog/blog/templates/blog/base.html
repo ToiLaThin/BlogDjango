@@ -7,6 +7,37 @@
 
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+      <!-- style for pagination section -->
+      <style>
+        .center{
+            text-align: center;
+        }
+        .pagination{
+            display: inline-block; 
+            text-align: center;   
+        }
+        .pagination a{
+            text-decoration: none;
+            font: bold 12px "segoe ui",sans-serif;
+            color: rgb(44, 43, 43);
+
+            margin: 0 2px;
+            padding: 8px 12px;
+            float: left;
+
+            transition: 0.8s;
+        }
+        .pagination a.active{
+            color: whitesmoke;
+            background-color: rgba(221, 7, 7, 0.813);
+            border-radius: 50%;
+        }
+        .pagination a:hover:not(.active){
+            background-color: rgba(50, 133, 242, 0.792);
+            color: whitesmoke;
+            border-radius: 5px;
+        }
+    </style>
 
     <title>{% block title_tag %}This is a blog{% endblock title_tag %}</title>
   </head>
@@ -62,6 +93,13 @@
                 <a class="nav-link " href="{% url 'category_list' %}">Categories</a>
               </li> 
             {% endif %}
+
+            {% comment %} code for statistic {% endcomment %}
+            {% if request.user.is_superuser%}
+              <li class="nav-item">
+                <a class="nav-link " href="{% url 'statistic' %}">Statistic</a>
+              </li> 
+            {% endif %}
           </ul>
         </div>
       </div>
@@ -70,6 +108,29 @@
     <div class="container">
       {%block title%}{% endblock title %}
       {% block content %}{% endblock %}
+    </div>
+    
+    <div class="container center">
+      <div class="pagination">
+          <!-- Pagination code section -->
+          {% if is_paginated or page_obj.has_other_pages %}
+              {% if page_obj.has_previous %}
+                  <a href="?page=1"><<</a>
+                  <a href="?page={{page_obj.previous_page_number}}"><</a>
+              {% endif %}
+              {% for page_num in paginator.page_range %}
+                  {% if page_obj.number == page_num %}
+                      <a href="?page={{page_num}}" class="active">{{page_num}}</a>
+                  {% else %}
+                      <a href="?page={{page_num}}">{{page_num}}</a>
+                  {% endif %}
+              {% endfor %}
+              {% if page_obj.has_next %}
+                  <a href="?page={{page_obj.next_page_number}}">></a>
+                  <a href="?page={{paginator.num_pages}}">>></a>
+              {% endif %}
+          {% endif %}
+      </div>
     </div>
     <!-- Optional JavaScript; choose one of the two! -->
 

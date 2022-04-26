@@ -122,13 +122,16 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 # ten của folder đó phải là static và media
+# tao static folder trong app se duoc hiểu là static folder
 STATIC_URL = '/static/'
 MEDIA_URL = '/media/'
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-STATICFILES_DIRS = (
+# cho static folder nằm ngoài folder của app
+# phải là ngoặc [] ko là ()
+STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
-)
+]
 
 LOGIN_REDIRECT_URL = 'post_list'
 

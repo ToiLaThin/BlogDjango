@@ -1,0 +1,35 @@
+{% extends 'blog/base.html' %}
+{% block content %}
+    {% if chart1 %}
+        <img src="data:image/png;base64, {{chart1|safe}}">
+    {% else %}
+        <h1>No chart 1</h1>
+    {% endif %}
+
+    <br>
+    <br>
+
+    {% if chart2 %}
+        <img src="data:image/png;base64, {{chart2|safe}}">
+    {% else %}
+        <h1>No chart 2</h1>
+    {% endif %}
+
+    <br>
+    <br>
+
+    {% if chart3 %}
+        <img src="data:image/png;base64, {{chart3|safe}}">
+    {% else %}
+        <h1>No chart 3</h1>
+    {% endif %}
+
+    <br>
+    <br>
+    <h1>Number of posts: {{posts_num}}</h1>
+    <h1>Number of staff: {{posts_author}}</h1>
+    <h1>Number of category: {{categories_num}}</h1>
+    <h1>Amount of money: {{revenue}} đô la</h1>
+
+{% endblock content %}
+

@@ -5,7 +5,7 @@
         <br>
         <br>
         <ul>
-            {% for post in posts %}
+            {% for post in page_obj.object_list %}
                 <li>
                     <a href="{% url 'post_detail' post.pk %}">{{post.title}}</a> | {{post.author}} | {{post.category}} -------- At {{post.pub_date}}
                     {% if user.is_authenticated and request.user.id == post.author.id %}

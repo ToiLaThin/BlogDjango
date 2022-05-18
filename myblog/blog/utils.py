@@ -49,21 +49,29 @@ def get_plot(x: str, hue: str, df: pd.DataFrame, xlabel: str, ylabel: str, title
     graph = get_graph()
     return graph
 
+    # chuyển các seriest thành 1 dataframe duy nhất
 
-# chuyển các seriest thành 1 dataframe duy nhất
-def pre_process(sr1: pd.Series, sr2: pd.Series, sr3: pd.Series, sr4: pd.Series = None, sr5: pd.Series = None):
+
+def pre_process(sr1: pd.Series, sr2: pd.Series, sr3: pd.Series, sr4: pd.Series = None, sr5: pd.Series = None, sr6: pd.Series = None):
     pd_dict = {
         'Title': sr1,
         'Body': sr2,
         'Category-Name': sr3,
         'Author': sr4,
         'Likes':  sr5,
+        'Published-Date': sr6,
     }
     df = pd.DataFrame(pd_dict)
     df.fillna('', inplace=True)
     sr = df['Body'].str.split(' ')
     sr.update([len(words_lst) for words_lst in sr.values])
     df['Word-Count'] = sr
+
+    df['temp'] = df['Published-Date'].str.split("-")
+    df['Month'] = df['temp'].str.get(1)
+    df['Year'] = df['temp'].str.get(0)
+    #df.fillna('', inplace=True)
+    del df['temp']
     return df
 
 
@@ -86,9 +94,12 @@ def get_dataframe():
     post_likes = Post.objects.all().annotate(like_count=Count('likes'))
     post_likes = pd.Series([post.like_count for post in post_likes])
 
-    df = pre_process(sr1=post_titles, sr2=post_bodies,
-                     sr3=post_categories, sr4=post_authors, sr5=post_likes)
+    post_pub_date = list(Post.objects.all().values_list('pub_date', flat=True))
+    post_pub_date = map(str, post_pub_date)
+    post_pub_date = pd.Series(post_pub_date)
 
+    df = pre_process(sr1=post_titles, sr2=post_bodies,
+                     sr3=post_categories, sr4=post_authors, sr5=post_likes, sr6=post_pub_date)
     data_csv = df.to_csv('blog_data.csv', index=None, header=True)
     return df
 
@@ -112,12 +123,12 @@ def get_context_chart() -> dict:
     revenue = df.get('Likes').sum() * 2
     context_dict = {
         'chart1': chart1,
-        'chart2': chart2,
+        # 'chart2': chart2,
         'chart3': chart3,
         'posts_num': posts_num,
         'posts_author': posts_author,
         'categories_num': categories_num,
-        'revenue': revenue,
+        # 'revenue': revenue,
 
     }
     return context_dict

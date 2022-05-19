@@ -67,6 +67,7 @@ def pre_process(sr1: pd.Series, sr2: pd.Series, sr3: pd.Series, sr4: pd.Series =
     sr.update([len(words_lst) for words_lst in sr.values])
     df['Word-Count'] = sr
 
+    # Thêm tháng và năm
     df['temp'] = df['Published-Date'].str.split("-")
     df['Month'] = df['temp'].str.get(1)
     df['Year'] = df['temp'].str.get(0)
@@ -120,15 +121,24 @@ def get_context_chart() -> dict:
     categories_num = df['Category-Name']
     categories_num = categories_num.drop_duplicates().count()
 
+    posts_per_author = df.groupby(
+        ['Author'])['Title'].count().to_frame()
+    # posts_per_author.reset_index(inplace=True)
+    posts_per_author.columns = ['Count-Post-Per-Author']
+    posts_per_author = posts_per_author['Count-Post-Per-Author'].to_list()
+
     revenue = df.get('Likes').sum() * 2
     context_dict = {
         'chart1': chart1,
-        # 'chart2': chart2,
+        'chart2': chart2,
         'chart3': chart3,
         'posts_num': posts_num,
         'posts_author': posts_author,
         'categories_num': categories_num,
-        # 'revenue': revenue,
+        'revenue': revenue,
+
+        'authors': df['Author'].drop_duplicates().to_list(),
+        'posts_per_author': posts_per_author
 
     }
     return context_dict

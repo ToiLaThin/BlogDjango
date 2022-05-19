@@ -1,5 +1,71 @@
 {% extends 'blog/base.html' %}
 {% block content %}
+    <style>
+        .space{
+            margin-right: 48px;
+        }
+    </style>
+    
+    <form method="post" action="{%url 'statistic'%}">
+        {% csrf_token %}
+        <label for="type">Choose a chart type:</label>
+        <select id="type" name="type-dropdown" class="space">
+            {% for type in types %}
+                <option value="{{type}}">{{type}}</option>
+            {% endfor %}
+        </select>
+        <label for="month">Choose a month:</label>
+        <select id="month" name="month-dropdown" class="space">
+            {% for month in months %}
+                <option value="{{month}}">{{month}}</option>
+            {% endfor %}
+        </select>
+        <label for="year">Choose a year:</label>
+        <select id="year" name="year-dropdown" class="space">
+            {% for year in years %}
+                <option value="{{year}}">{{year}}</option>
+            {% endfor %}
+        </select>        
+        <input type="submit" class="btn-sm btn-secondary" value="Filter">
+    </form>
+
+    <br>
+    <br>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+    <canvas id="bar-chart" width="800" height="450"></canvas>
+    <script>
+        // Bar chart
+        var author_list = {{authors|safe}}
+        var num_posts_per_author = {{posts_per_author|safe}}
+        new Chart(document.getElementById("bar-chart"), {
+            type: 'bar',
+            data: {
+                labels: author_list,
+                datasets: [
+                    {
+                        label: "Số bài viết của tác giả này",
+                        backgroundColor: ["#3e95cd", "#8e5ea2","#3cba9f","#e8c3b9","#c45850"],
+                        data: num_posts_per_author,
+                    }
+                ]
+            },
+            options: {
+                legend: { display: false },
+                title: {
+                    display: true,
+                    text: 'Hiệu suất của các tác giả đang làm cho website này'
+                },
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }]
+                }
+            }
+        });
+    </script>
     {% if chart1 %}
         <img src="data:image/png;base64, {{chart1|safe}}">
     {% else %}

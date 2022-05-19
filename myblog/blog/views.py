@@ -142,4 +142,10 @@ def LikePostView(request, pk):
 def ChartView(request):
     template_name = 'statistic/chart.html'
     context = get_context_chart()
+    context['months'] = [month for month in range(1, 13)]
+    context['years'] = [year for year in range(2022, 2031)]
+    context['types'] = ['bar', 'chart']
+
+    if request.method == 'POST':
+        return HttpResponseRedirect(reverse('statistic', args=[]))
     return render(request, template_name, context)

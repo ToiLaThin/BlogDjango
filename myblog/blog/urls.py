@@ -27,5 +27,4 @@ urlpatterns = [
     path('categories/create/', CategoryCreateView.as_view(), name='category_create'),
     path('posts/<int:pk>/like/', LikePostView, name='like_post'),
     path('statistic', ChartView, name='statistic'),
-
 ]

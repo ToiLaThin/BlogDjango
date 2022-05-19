@@ -1,3 +1,4 @@
+from re import M
 import matplotlib.pyplot as plt
 from io import BytesIO
 import base64
@@ -105,7 +106,7 @@ def get_dataframe():
     return df
 
 
-def get_context_chart() -> dict:
+def get_context_chart(month: str = '0', year: str = '0') -> dict:
     df = get_dataframe()
     chart1 = get_plot(x='Author', hue='Category-Name', df=df, xlabel='Author s id',
                       ylabel='Post s count', title='Number of Posts per user', cond=1)
@@ -121,9 +122,20 @@ def get_context_chart() -> dict:
     categories_num = df['Category-Name']
     categories_num = categories_num.drop_duplicates().count()
 
-    posts_per_author = df.groupby(
-        ['Author'])['Title'].count().to_frame()
-    # posts_per_author.reset_index(inplace=True)
+    if month == '0' and year == '0':
+        no_chart = False
+        posts_per_author = df.groupby(['Author'])['Title'].count().to_frame()
+    elif month != '0' and year != '0':
+        no_chart = False
+        sub_df = df[(df['Month'].str.contains(month))]#là dataframe
+        gamek = sub_df.to_csv('gamek.csv', index=None, header=True)
+        if len(sub_df) == 0:
+            posts_per_author = df.groupby(['Author',])['Title'].count().to_frame()
+            no_chart = True
+        elif len(sub_df) > 0:
+            posts_per_author = sub_df.groupby(['Author',])['Title'].count().to_frame()
+            no_chart = False
+
     posts_per_author.columns = ['Count-Post-Per-Author']
     posts_per_author = posts_per_author['Count-Post-Per-Author'].to_list()
 
@@ -138,7 +150,8 @@ def get_context_chart() -> dict:
         'revenue': revenue,
 
         'authors': df['Author'].drop_duplicates().to_list(),
-        'posts_per_author': posts_per_author
+        'posts_per_author': posts_per_author,
+        'no_chart': no_chart,
 
     }
     return context_dict

@@ -5,8 +5,8 @@
             margin-right: 48px;
         }
     </style>
-    
-    <form method="post" action="{%url 'statistic'%}">
+    <h1>{{the_month}} - {{the_year}}</h1>
+    <form method="POST" action="{%url 'statistic'%}">
         {% csrf_token %}
         <label for="type">Choose a chart type:</label>
         <select id="type" name="type-dropdown" class="space">
@@ -26,6 +26,16 @@
                 <option value="{{year}}">{{year}}</option>
             {% endfor %}
         </select>        
+        {% comment %} <script> 
+            function get_selected_value(){
+                var dropdown = document.getElementById('type')
+                var chart_type = dropdown.options[dropdown.selectedIndex].value;
+                dropdown = document.getElementById('month')
+                var month = dropdown.options[dropdown.selectedIndex].value;
+                dropdown = document.getElementById('year')
+                var year = dropdown.options[dropdown.selectedIndex].value;
+            }
+        </script> {% endcomment %}
         <input type="submit" class="btn-sm btn-secondary" value="Filter">
     </form>
 
@@ -33,39 +43,43 @@
     <br>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
-    <canvas id="bar-chart" width="800" height="450"></canvas>
-    <script>
-        // Bar chart
-        var author_list = {{authors|safe}}
-        var num_posts_per_author = {{posts_per_author|safe}}
-        new Chart(document.getElementById("bar-chart"), {
-            type: 'bar',
-            data: {
-                labels: author_list,
-                datasets: [
-                    {
-                        label: "Số bài viết của tác giả này",
-                        backgroundColor: ["#3e95cd", "#8e5ea2","#3cba9f","#e8c3b9","#c45850"],
-                        data: num_posts_per_author,
-                    }
-                ]
-            },
-            options: {
-                legend: { display: false },
-                title: {
-                    display: true,
-                    text: 'Hiệu suất của các tác giả đang làm cho website này'
-                },
-                scales: {
-                    yAxes: [{
-                        ticks: {
-                            beginAtZero: true
+    {% if no_chart %}
+        <h1>Không có dữ liệu</h1>
+    {% else %}
+        <canvas id="bar-chart" width="800" height="450"></canvas>
+        <script>
+            // Bar chart
+            var author_list = {{authors|safe}}
+            var num_posts_per_author = {{posts_per_author|safe}}
+            new Chart(document.getElementById("bar-chart"), {
+                type: 'bar',
+                data: {
+                    labels: author_list,
+                    datasets: [
+                        {
+                            label: "Số bài viết của tác giả này",
+                            backgroundColor: ["#3e95cd", "#8e5ea2","#3cba9f","#e8c3b9","#c45850"],
+                            data: num_posts_per_author,
                         }
-                    }]
+                    ]
+                },
+                options: {
+                    legend: { display: false },
+                    title: {
+                        display: true,
+                        text: 'Hiệu suất của các tác giả đang làm cho website này'
+                    },
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                beginAtZero: true
+                            }
+                        }]
+                    }
                 }
-            }
-        });
-    </script>
+            });
+        </script>
+    {% endif %}
     {% if chart1 %}
         <img src="data:image/png;base64, {{chart1|safe}}">
     {% else %}

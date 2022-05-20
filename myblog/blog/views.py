@@ -146,16 +146,17 @@ def ChartView(request):
         context = get_context_chart('0', '0')
         context['months'] = [month for month in range(1, 13)]
         context['years'] = [year for year in range(2022, 2031)]
-        context['types'] = ['bar', 'chart']
+        context['types'] = ['bar', 'scatter','line','pie','doughnut']
+        context['chart_type'] = 'bar'
     elif request.method == 'POST':
-        the_month = '0'
-        the_year = '0'
         the_month = str(request.POST['month-dropdown'])
         the_year = str(request.POST['year-dropdown'])
+        chart_type = str(request.POST['type-dropdown'])
         context = get_context_chart(the_month, the_year)
         context['the_month'] = the_month
         context['the_year'] = the_year
         context['months'] = [month for month in range(1, 13)]
         context['years'] = [year for year in range(2022, 2031)]
-        context['types'] = ['bar', 'chart']
+        context['types'] = ['bar', 'scatter','line','pie','doughnut']
+        context['chart_type'] = chart_type
     return render(request, template_name, context)

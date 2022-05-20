@@ -26,40 +26,33 @@
                 <option value="{{year}}">{{year}}</option>
             {% endfor %}
         </select>        
-        {% comment %} <script> 
-            function get_selected_value(){
-                var dropdown = document.getElementById('type')
-                var chart_type = dropdown.options[dropdown.selectedIndex].value;
-                dropdown = document.getElementById('month')
-                var month = dropdown.options[dropdown.selectedIndex].value;
-                dropdown = document.getElementById('year')
-                var year = dropdown.options[dropdown.selectedIndex].value;
-            }
-        </script> {% endcomment %}
         <input type="submit" class="btn-sm btn-secondary" value="Filter">
     </form>
 
     <br>
     <br>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.min.js"></script>
     {% if no_chart %}
         <h1>Không có dữ liệu</h1>
     {% else %}
-        <canvas id="bar-chart" width="800" height="450"></canvas>
+        <div class="chart-container" style="width:800px; height:600px;">
+            <canvas id="bar-chart" width="800" height="450" style="position:relative; top:0;"></canvas>
+        </div>
         <script>
             // Bar chart
             var author_list = {{authors|safe}}
             var num_posts_per_author = {{posts_per_author|safe}}
-            new Chart(document.getElementById("bar-chart"), {
-                type: 'bar',
+            new Chart(document.getElementById("bar-chart").getContext("2d"), {
+                type: "{{chart_type}}",
                 data: {
                     labels: author_list,
                     datasets: [
                         {
                             label: "Số bài viết của tác giả này",
                             backgroundColor: ["#3e95cd", "#8e5ea2","#3cba9f","#e8c3b9","#c45850"],
-                            data: num_posts_per_author,
+                            data: num_posts_per_author
                         }
                     ]
                 },
@@ -75,7 +68,7 @@
                                 beginAtZero: true
                             }
                         }]
-                    }
+                    },        
                 }
             });
         </script>

@@ -127,7 +127,7 @@ def get_context_chart(month: str = '0', year: str = '0') -> dict:
         posts_per_author = df.groupby(['Author'])['Title'].count().to_frame()
     elif month != '0' and year != '0':
         no_chart = False
-        sub_df = df[(df['Month'].str.contains(month))]#là dataframe
+        sub_df = df[(df['Month'].str.contains(month)) & (df['Year'].str.contains(year))]#là dataframe
         gamek = sub_df.to_csv('gamek.csv', index=None, header=True)
         if len(sub_df) == 0:
             posts_per_author = df.groupby(['Author',])['Title'].count().to_frame()
@@ -152,6 +152,5 @@ def get_context_chart(month: str = '0', year: str = '0') -> dict:
         'authors': df['Author'].drop_duplicates().to_list(),
         'posts_per_author': posts_per_author,
         'no_chart': no_chart,
-
     }
     return context_dict

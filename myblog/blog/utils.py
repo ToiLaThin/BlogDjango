@@ -121,14 +121,16 @@ def get_context_chart(month: str = '0', year: str = '0') -> dict:
 
     categories_num = df['Category-Name']
     categories_num = categories_num.drop_duplicates().count()
-
+    authors = df['Author'].drop_duplicates().to_list()
     if month == '0' and year == '0':
         no_chart = False
         posts_per_author = df.groupby(['Author'])['Title'].count().to_frame()
+        authors = authors
     elif month != '0' and year != '0':
         no_chart = False
         sub_df = df[(df['Month'].str.contains(month)) & (df['Year'].str.contains(year))]#là dataframe
         gamek = sub_df.to_csv('gamek.csv', index=None, header=True)
+        authors = sub_df['Author'].drop_duplicates().to_list()
         if len(sub_df) == 0:
             posts_per_author = df.groupby(['Author',])['Title'].count().to_frame()
             no_chart = True
@@ -149,7 +151,7 @@ def get_context_chart(month: str = '0', year: str = '0') -> dict:
         'categories_num': categories_num,
         'revenue': revenue,
 
-        'authors': df['Author'].drop_duplicates().to_list(),
+        'authors': authors,
         'posts_per_author': posts_per_author,
         'no_chart': no_chart,
     }

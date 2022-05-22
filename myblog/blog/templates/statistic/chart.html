@@ -50,9 +50,9 @@
                     labels: author_list,
                     datasets: [
                         {
+                            data: num_posts_per_author,
                             label: "Số bài viết của tác giả này",
                             backgroundColor: ["#3e95cd", "#8e5ea2","#3cba9f","#e8c3b9","#c45850"],
-                            data: num_posts_per_author
                         }
                     ]
                 },
@@ -69,7 +69,7 @@
                             }
                         }]
                     },        
-                }
+                },
             });
         </script>
     {% endif %}

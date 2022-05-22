@@ -44,34 +44,63 @@
             // Bar chart
             var author_list = {{authors|safe}}
             var num_posts_per_author = {{posts_per_author|safe}}
-            new Chart(document.getElementById("bar-chart").getContext("2d"), {
-                type: "{{chart_type}}",
-                data: {
-                    labels: author_list,
-                    datasets: [
-                        {
-                            data: num_posts_per_author,
-                            label: "Số bài viết của tác giả này",
-                            backgroundColor: ["#3e95cd", "#8e5ea2","#3cba9f","#e8c3b9","#c45850"],
-                        }
-                    ]
-                },
-                options: {
-                    legend: { display: false },
-                    title: {
-                        display: true,
-                        text: 'Hiệu suất của các tác giả đang làm cho website này'
-                    },
-                    scales: {
-                        yAxes: [{
-                            ticks: {
-                                beginAtZero: true
-                            }
-                        }]
-                    },        
-                },
-            });
         </script>
+        {% if chart_type == "pie" or chart_type == "doughnut" %}
+            <script>
+                new Chart(document.getElementById("bar-chart"), {
+                    type: '{{chart_type}}',
+                    data: {
+                        labels: author_list,
+                        datasets: [
+                            {
+                                data: num_posts_per_author,
+                                label: "Số bài viết của tác giả này",
+                                backgroundColor: ["#3e95cd", "#8e5ea2","#3cba9f","#e8c3b9","#c45850"],
+                            }
+                        ]
+                    },
+                    options: {
+                        legend: { display: false },
+                        title: {
+                            display: true,
+                            text: 'Hiệu suất của các tác giả đang làm cho website này'
+                        },                                                
+                    },
+                });   
+            </script>    
+        {% else %}
+            {% comment %} them scale vo {% endcomment %}
+            <script>
+                new Chart(document.getElementById("bar-chart"), {
+                    type: '{{chart_type}}',
+                    data: {
+                        labels: author_list,
+                        datasets: [
+                            {
+                                data: num_posts_per_author,
+                                label: "Số bài viết của tác giả này",
+                                backgroundColor: ["#3e95cd", "#8e5ea2","#3cba9f","#e8c3b9","#c45850"],
+                            }
+                        ]
+                    },
+                    options: {
+                        legend: { display: false },
+                        title: {
+                            display: true,
+                            text: 'Hiệu suất của các tác giả đang làm cho website này'
+                        },                                                
+                        scales: {
+                            yAxes: [{
+                                ticks: {
+                                    beginAtZero: true
+                                }
+                            }]
+                        }
+                    },
+                });   
+            </script>  
+        {% endif %}
+        
     {% endif %}
     {% if chart1 %}
         <img src="data:image/png;base64, {{chart1|safe}}">
